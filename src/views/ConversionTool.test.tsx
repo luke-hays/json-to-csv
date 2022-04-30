@@ -24,13 +24,13 @@ describe('conversion tool should render', () => {
     test('with a text box for inputting json JSON', () => {
       const jsonTextBox = screen.getByLabelText('JSON');
       expect(jsonTextBox).toBeDefined();
-      expect(false);
+      expect(false).toEqual(true);
     });
 
     test('with a text box that displays CSV format"', () => {
       const csvTextBox = screen.getByLabelText('CSV');
       expect(csvTextBox).toBeDefined();
-      expect(false);
+      expect(false).toEqual(true);
     });
 
     describe.skip('with a button to convert the json to CSV', () => {

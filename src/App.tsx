@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { useTheme, Theme } from '@emotion/react';
+import ConversionTool from 'views/ConversionTool';
 
 const App = (): JSX.Element => {
   const theme: Theme = useTheme();
@@ -26,21 +27,7 @@ const App = (): JSX.Element => {
     paddingLeft: '30px',
   });
 
-  const Main = styled('div')({
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  });
-
-  const MainText = styled('div')({
-    textAlign: 'center',
-  });
-
-  const LibraryList = styled('ul')({
-    listStyleType: 'none',
-    padding: 0,
-    margin: 0,
-  });
+  const Main = styled('div')({});
 
   return (
     <div>
@@ -51,18 +38,7 @@ const App = (): JSX.Element => {
           </HeaderText>
         </Header>
         <Main>
-          <MainText>
-            <p>Hello World!</p>
-            <p>This React template contains the following libraries:</p>
-            <LibraryList>
-              <li>ESLint</li>
-              <li>Prettier</li>
-              <li>Jest</li>
-              <li>Playwright</li>
-              <li>Emotion</li>
-              <li>React-Router</li>
-            </LibraryList>
-          </MainText>
+          <ConversionTool />
         </Main>
       </Body>
     </div>
