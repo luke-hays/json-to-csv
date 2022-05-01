@@ -24,4 +24,4 @@ yarn-error.log*
 test-results/
 playwright-report/
 
-.vscode
+.vscode/
