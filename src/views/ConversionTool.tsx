@@ -30,9 +30,11 @@ const ClearButton = styled(Button)({
 
 const ConversionTool = (): JSX.Element => {
   const [warning, setWarning] = useState('');
-
   const { json, updateJson, csv, parseToCsv, clearText } =
     useCsvJsonConverter();
+
+  const textRows = 10;
+  const textCols = 100;
 
   const convertBtnClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.preventDefault();
@@ -68,10 +70,11 @@ const ConversionTool = (): JSX.Element => {
         <TextAreaLabel htmlFor="json">
           JSON
           <ConversionTextArea
+            key="json"
             id="json"
             name="json"
-            rows={5}
-            cols={20}
+            rows={textRows}
+            cols={textCols}
             onChange={updateTextArea}
             value={json}
           />
@@ -82,10 +85,11 @@ const ConversionTool = (): JSX.Element => {
           CSV
           <ConversionTextArea
             readOnly
+            key="csv"
             id="csv"
             name="csv"
-            rows={5}
-            cols={20}
+            rows={textRows}
+            cols={textCols}
             value={csv}
           />
         </TextAreaLabel>

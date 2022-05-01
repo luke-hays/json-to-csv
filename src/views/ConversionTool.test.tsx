@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable no-useless-escape */
 /* eslint-disable playwright/missing-playwright-await */
 
@@ -40,19 +41,18 @@ describe('conversion tool should render', () => {
       test('with a button to convert the json to text', () => {
         const jsonTextBox = screen.getByLabelText('JSON');
         const csvTextBox = screen.getByLabelText('CSV');
-        const convertBtn = screen.getByRole('button', { name: 'convert' });
+        const convertBtn = screen.getByRole('button', { name: 'Convert' });
 
-        userEvent.type(jsonTextBox, '{ "test": "value" }');
+        userEvent.type(jsonTextBox, 
+          '{ "test": "value", "comma": "seperate" }'.replace(/[{[]/g, '$&$&'));
         userEvent.click(convertBtn);
 
-        expect(csvTextBox).toHaveValue('test,value');
+        expect(csvTextBox).toHaveValue('test,comma\nvalue,seperate');
       });
 
-      test('parse warning can be closed', () => {
-        const jsonTextBox = screen.getByLabelText('JSON');
-        const convertBtn = screen.getByRole('button', { name: 'convert' });
+      test.skip('parse warning can be closed', () => {
+        const convertBtn = screen.getByRole('button', { name: 'Convert' });
 
-        userEvent.type(jsonTextBox, '{}');
         userEvent.click(convertBtn);
 
         const warning = screen.getByText('Warning - Empty Json');
@@ -70,30 +70,31 @@ describe('conversion tool should render', () => {
       test('that prints a warning if json is empty"', () => {
         const jsonTextBox = screen.getByLabelText('JSON');
         const csvTextBox = screen.getByLabelText('CSV');
-        const convertBtn = screen.getByRole('button', { name: 'convert' });
+        const convertBtn = screen.getByRole('button', { name: 'Convert' });
 
         userEvent.click(convertBtn);
 
         expect(csvTextBox).toHaveValue('');
-        expect(screen.getByText('Warning - Empty Json')).toBeInTheDocument();
+        expect(screen.getByText('Empty Json')).toBeInTheDocument();
 
-        userEvent.type(jsonTextBox, '{ }');
+        userEvent.type(jsonTextBox, '{ }'.replace(/[{[]/g, '$&$&'));
         userEvent.click(convertBtn);
 
         expect(csvTextBox).toHaveValue('');
-        expect(screen.getByText('Warning - Empty Json')).toBeInTheDocument();
+        expect(screen.getByText('Empty Json')).toBeInTheDocument();
       });
 
       test('that prints a warning if json is invalid"', () => {
         const jsonTextBox = screen.getByLabelText('JSON');
         const csvTextBox = screen.getByLabelText('CSV');
-        const convertBtn = screen.getByRole('button', { name: 'convert' });
+        const convertBtn = screen.getByRole('button', { name: 'Convert' });
 
-        userEvent.type(jsonTextBox, '{ "test": }');
+        userEvent.type(jsonTextBox, '{ "test": }'.replace(/[{[]/g, '$&$&'));
         userEvent.click(convertBtn);
 
         expect(csvTextBox).toHaveValue('');
-        expect(screen.getByText('Warning - Invalid Json')).toBeInTheDocument();
+        expect(screen.getByText(
+          'Unexpected token } in JSON at position 8')).toBeInTheDocument();
       });
 
       test('with a button that clears both boxes', () => {
@@ -112,13 +113,13 @@ describe('conversion tool should render', () => {
         expect(jsonTextBox).toHaveValue('');
 
         userEvent.clear(jsonTextBox);
-        // eslint-disable-next-line prettier/prettier
-        userEvent.type(jsonTextBox, '\{ "test": "value" \}');
+
+        userEvent.type(jsonTextBox, 
+          '{ "test": "value" }'.replace(/[{[]/g, '$&$&'));        
         userEvent.click(convertBtn);
 
-        // eslint-disable-next-line prettier/prettier
-        expect(jsonTextBox).toHaveValue('\{ "test": "value" \}');
-        expect(csvTextBox).toHaveValue('test,value');
+        expect(jsonTextBox).toHaveValue('{ "test": "value" }');
+        expect(csvTextBox).toHaveValue('test\nvalue');
 
         userEvent.click(clearBtn);
         expect(jsonTextBox).toHaveValue('');
