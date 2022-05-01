@@ -1,6 +1,11 @@
 import { useState } from 'react';
 
-const useCsv = (): any => {
+interface useCsvReturn {
+  csv: string;
+  setCsv: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const useCsv = (): useCsvReturn => {
   const [csv, setCsv] = useState('');
 
   return { csv, setCsv };

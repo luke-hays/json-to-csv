@@ -1,6 +1,11 @@
 import { useState } from 'react';
 
-const useJson = (): any => {
+interface useJsonReturn {
+  json: string;
+  setJson: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const useJson = (): useJsonReturn => {
   const [json, setJson] = useState('');
 
   return { json, setJson };

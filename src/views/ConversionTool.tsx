@@ -1,11 +1,12 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
+import { useState } from 'react';
 import styled from '@emotion/styled';
 
 import useCsvJsonConverter from 'hooks/useCsvJsonConverter';
 
 import TextArea from 'components/TextArea';
 import Button from 'components/Button';
-// import Warning from "components/Warning";
+import Warning from 'components/Warning';
 
 const ConversionContainer = styled('div')({
   display: 'flex',
@@ -28,17 +29,23 @@ const ClearButton = styled(Button)({
 });
 
 const ConversionTool = (): JSX.Element => {
+  const [warning, setWarning] = useState('');
+
   const { json, updateJson, csv, parseToCsv, clearText } =
     useCsvJsonConverter();
 
   const convertBtnClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.preventDefault();
 
+    let message = '';
+
     try {
       parseToCsv(json);
     } catch (error) {
-      // Set warning here
-      console.error(error);
+      if (error instanceof Error) message = error.message;
+      else message = String(error);
+    } finally {
+      setWarning(message);
     }
   };
 
@@ -46,6 +53,7 @@ const ConversionTool = (): JSX.Element => {
     e.preventDefault();
 
     clearText();
+    setWarning('');
   };
 
   const updateTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
@@ -55,6 +63,7 @@ const ConversionTool = (): JSX.Element => {
   return (
     <>
       <h1>JSON to CSV Conversion Tool</h1>
+      {warning ? <Warning key={warning} text={warning} /> : ''}
       <ConversionContainer>
         <TextAreaLabel htmlFor="json">
           JSON

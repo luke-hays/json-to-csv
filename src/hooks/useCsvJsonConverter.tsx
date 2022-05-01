@@ -1,7 +1,15 @@
 import useJson from './useJson';
 import useCsv from './useCsv';
 
-const useCsvJsonConverter = (): any => {
+interface useCsvJsonConverterReturn {
+  json: string;
+  csv: string;
+  updateJson(text: string): void;
+  parseToCsv(text: string): void;
+  clearText(): void;
+}
+
+const useCsvJsonConverter = (): useCsvJsonConverterReturn => {
   const { json, setJson } = useJson();
   const { csv, setCsv } = useCsv();
 
@@ -10,6 +18,7 @@ const useCsvJsonConverter = (): any => {
   };
 
   const parseToCsv = (text: string): void => {
+    if (!text) throw new Error('Empty Json');
     setCsv(text);
   };
 
